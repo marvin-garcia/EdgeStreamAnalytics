@@ -1,0 +1,16 @@
+{
+    "Name": "sqloutput",
+    "DataSourceType": "SQL Database",
+    "SQLDatabaseProperties": {
+        "Database": "iotsqldb",
+        "Server": "sqlvm-019c7abe.eastus.cloudapp.azure.com",
+        "User": "dbuser",
+        "Password": "PasswordPassword",
+        "Table": "SimTemp",
+        "MaxWriterCount": 1,
+        "MaxBatchCount": 10000,
+        "AuthenticationMode": "ConnectionString"
+    },
+    "DataSourceCredentialDomain": null,
+    "ScriptType": "Output"
+}

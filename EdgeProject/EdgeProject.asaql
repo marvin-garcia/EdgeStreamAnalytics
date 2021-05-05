@@ -1,0 +1,18 @@
+
+SELECT
+	*
+INTO
+	telemetryoutput
+FROM
+	sensorinput
+
+SELECT
+	machine.temperature as machinetemperature,
+	machine.pressure as machinepressure,
+	ambient.temperature as ambienttemperature,
+	ambient.humidity as ambienthumidity,
+	timeCreated as timestamp
+INTO
+	sqloutput
+FROM
+	sensorinput
