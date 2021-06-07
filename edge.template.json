@@ -33,7 +33,7 @@
                 "properties.desired.routes.simTempSensorToStreamAnalytics": "FROM /messages/modules/simTempSensor/* INTO BrokeredEndpoint(\"modules/streamAnalytics/inputs/__ASA_INPUT__\")",
                 "properties.desired.routes.streamAnalyticsToIoTHub": "FROM /messages/modules/streamAnalytics/outputs/__ASA_UPSTREAM_OUTPUT__ INTO $upstream"
             },
-            "SimulatedTemperatureSensor": {
+            "simTempSensor": {
                 "properties.desired": {
                     "SendData": true,
                     "SendInterval": 5
