@@ -13,6 +13,10 @@
         {
             "filePath": "Outputs/telemetryoutput.json",
             "subType": "Output"
+        },
+        {
+            "filePath": "Outputs/sqloutput.json",
+            "subType": "Output"
         }
     ]
 }
