@@ -1,10 +1,36 @@
+WITH
+Aggregate AS
+(
+    SELECT
+        COUNT(*),
+        AVG(machine.temperature),
+        MAX(machine.temperature),
+        MIN(machine.temperature),
+        STDEV(machine.temperature),
+        VAR(machine.temperature)
+    FROM
+        sensorinput TIMESTAMP BY timeCreated
+    GROUP BY TumblingWindow(minute, 3)
+),
+Analytics AS
+(
+    SELECT
+        LAG(machine.temperature) OVER (LIMIT DURATION(minute, 3)),
+        LAST(machine.temperature) OVER (LIMIT DURATION(minute, 3)),
+        AnomalyDetection_SpikeAndDip(machine.temperature, 80, 120, 'spikesanddips') OVER(LIMIT DURATION(minute, 3))
+    FROM sensorinput TIMESTAMP BY timeCreated
+)
 
 SELECT
-	*
+    *
 INTO
-	telemetryoutput
+    telemetryoutput
 FROM
-	sensorinput
+    Aggregate
+JOIN
+    Analytics
+ON
+    DATEDIFF(second, Aggregate, Analytics) BETWEEN 0 AND 60
 
 SELECT
 	machine.temperature as machinetemperature,
