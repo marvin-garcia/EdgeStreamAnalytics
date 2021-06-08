@@ -243,8 +243,8 @@ function New-Environment() {
     #region iot edge deployment
 
     # update IoT edge deployment with stream analytics job details
-    $deployment_template = "$root_path/EdgeDeployments/edge.template.json"
-    $deployment_manifest = "$root_path/EdgeDeployments/edge.manifest.json"
+    $deployment_template = "$root_path/EdgeDeployments/streamanalytics.template.json"
+    $deployment_manifest = "$root_path/EdgeDeployments/streamanalytics.manifest.json"
 
     (Get-Content -Path $deployment_template -Raw) | ForEach-Object {
         $_ -replace '__ASA_ENV__', (ConvertTo-Json -InputObject $edge_manifest.env -Depth 10) `
