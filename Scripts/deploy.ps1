@@ -155,7 +155,7 @@ function New-Environment() {
     $storage_account = $storage_account.SubString(0, [System.Math]::Min($storage_account.Length, 20))
 
     #region Edge job settings
-    $query = Get-Content -Path "$root_path/EdgeProject/EdgeProject.asaql" -Raw
+    $query = Get-Content -Path "$root_path/StreamAnalytics/StreamAnalytics.asaql" -Raw
     
     ### Set max writer count for SQL output
     ### 0 = inherit partition (use this)
@@ -164,8 +164,8 @@ function New-Environment() {
     #endregion
 
     #region resource group deployment
-    $template_file = "$root_path/EdgeProject/Deploy/EdgeProject.JobTemplate.json"
-    $parameters_file = "$root_path/EdgeProject/Deploy/EdgeProject.JobTemplate.parameters.json"
+    $template_file = "$root_path/StreamAnalytics/Deploy/StreamAnalytics.JobTemplate.json"
+    $parameters_file = "$root_path/StreamAnalytics/Deploy/StreamAnalytics.JobTemplate.parameters.json"
 
     $deployment_parameters = @{
         "JobName" = @{ "value" = $edge_asa_job }
@@ -243,8 +243,8 @@ function New-Environment() {
     #region iot edge deployment
 
     # update IoT edge deployment with stream analytics job details
-    $deployment_template = "$root_path/edge.template.json"
-    $deployment_manifest = "$root_path/edge.manifest.json"
+    $deployment_template = "$root_path/EdgeDeployments/edge.template.json"
+    $deployment_manifest = "$root_path/EdgeDeployments/edge.manifest.json"
 
     (Get-Content -Path $deployment_template -Raw) | ForEach-Object {
         $_ -replace '__ASA_ENV__', (ConvertTo-Json -InputObject $edge_manifest.env -Depth 10) `
