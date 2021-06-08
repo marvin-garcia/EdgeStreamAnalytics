@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "ASAApiVersion": {
@@ -10,7 +10,7 @@
         "2016-03-01"
       ]
     },
-    "JobName": {
+    "StreamAnalyticsJobName": {
       "type": "string",
       "minLength": 3,
       "maxLength": 63,
@@ -83,30 +83,57 @@
     "Query": {
       "type": "string"
     },
-    "Output_sqloutput_server": {
+    "Output_rawtemperature_server": {
       "type": "string"
     },
-    "Output_sqloutput_database": {
+    "Output_rawtemperature_database": {
       "type": "string"
     },
-    "Output_sqloutput_user": {
+    "Output_rawtemperature_user": {
       "type": "string"
     },
-    "Output_sqloutput_table": {
+    "Output_rawtemperature_table": {
       "type": "string"
     },
-    "Output_sqloutput_password": {
+    "Output_rawtemperature_password": {
       "type": "string"
     },
-    "Output_sqloutput_maxWriterCount": {
+    "Output_rawtemperature_maxWriterCount": {
       "type": "int",
-      "defaultValue": 1
+      "defaultValue": 0
     },
-    "Output_sqloutput_maxBatchCount": {
+    "Output_rawtemperature_maxBatchCount": {
       "type": "int",
       "defaultValue": 10000
     },
-    "Output_sqloutput_authenticationMode": {
+    "Output_rawtemperature_authenticationMode": {
+      "type": "string",
+      "defaultValue": "ConnectionString"
+    },
+    "Output_aggregatedtemperature_server": {
+      "type": "string"
+    },
+    "Output_aggregatedtemperature_database": {
+      "type": "string"
+    },
+    "Output_aggregatedtemperature_user": {
+      "type": "string"
+    },
+    "Output_aggregatedtemperature_table": {
+      "type": "string"
+    },
+    "Output_aggregatedtemperature_password": {
+      "type": "string"
+    },
+    "Output_aggregatedtemperature_maxWriterCount": {
+      "type": "int",
+      "defaultValue": 0
+    },
+    "Output_aggregatedtemperature_maxBatchCount": {
+      "type": "int",
+      "defaultValue": 10000
+    },
+    "Output_aggregatedtemperature_authenticationMode": {
       "type": "string",
       "defaultValue": "ConnectionString"
     },
@@ -156,7 +183,7 @@
     {
       "type": "Microsoft.StreamAnalytics/StreamingJobs",
       "apiVersion": "[parameters('ASAApiVersion')]",
-      "name": "[parameters('JobName')]",
+      "name": "[parameters('StreamAnalyticsJobName')]",
       "location": "[parameters('Location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
@@ -220,19 +247,37 @@
             }
           },
           {
-            "name": "sqloutput",
+            "name": "rawtemperature",
             "properties": {
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[parameters('Output_sqloutput_server')]",
-                  "database": "[parameters('Output_sqloutput_database')]",
-                  "user": "[parameters('Output_sqloutput_user')]",
-                  "table": "[parameters('Output_sqloutput_table')]",
-                  "password": "[parameters('Output_sqloutput_password')]",
-                  "maxWriterCount": "[parameters('Output_sqloutput_maxWriterCount')]",
-                  "maxBatchCount": "[parameters('Output_sqloutput_maxBatchCount')]",
-                  "authenticationMode": "[parameters('Output_sqloutput_authenticationMode')]"
+                  "server": "[parameters('Output_rawtemperature_server')]",
+                  "database": "[parameters('Output_rawtemperature_database')]",
+                  "user": "[parameters('Output_rawtemperature_user')]",
+                  "table": "[parameters('Output_rawtemperature_table')]",
+                  "password": "[parameters('Output_rawtemperature_password')]",
+                  "maxWriterCount": "[parameters('Output_rawtemperature_maxWriterCount')]",
+                  "maxBatchCount": "[parameters('Output_rawtemperature_maxBatchCount')]",
+                  "authenticationMode": "[parameters('Output_rawtemperature_authenticationMode')]"
+                }
+              }
+            }
+          },
+          {
+            "name": "aggregatedtemperature",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[parameters('Output_aggregatedtemperature_server')]",
+                  "database": "[parameters('Output_aggregatedtemperature_database')]",
+                  "user": "[parameters('Output_aggregatedtemperature_user')]",
+                  "table": "[parameters('Output_aggregatedtemperature_table')]",
+                  "password": "[parameters('Output_aggregatedtemperature_password')]",
+                  "maxWriterCount": "[parameters('Output_aggregatedtemperature_maxWriterCount')]",
+                  "maxBatchCount": "[parameters('Output_aggregatedtemperature_maxBatchCount')]",
+                  "authenticationMode": "[parameters('Output_aggregatedtemperature_authenticationMode')]"
                 }
               }
             }
@@ -245,6 +290,5 @@
         }
       }
     }
-  ],
-  "outputs": {}
+  ]
 }

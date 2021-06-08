@@ -15,7 +15,11 @@
             "subType": "Output"
         },
         {
-            "filePath": "Outputs/sqloutput.json",
+            "filePath": "Outputs/rawtemperature.json",
+            "subType": "Output"
+        },
+        {
+            "filePath": "Outputs/aggregatedtemperature.json",
             "subType": "Output"
         }
     ]

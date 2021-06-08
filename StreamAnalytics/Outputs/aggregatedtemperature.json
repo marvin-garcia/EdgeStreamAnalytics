@@ -1,0 +1,16 @@
+{
+    "Name": "aggregatedtemperature",
+    "DataSourceType": "SQL Database",
+    "SQLDatabaseProperties": {
+        "Database": "IoTEdgeDB",
+        "Server": "sqlserver",
+        "User": "SA",
+        "Password": "Strong!Passw0rd",
+        "Table": "AggregatedMachineTemperature",
+        "MaxWriterCount": 1,
+        "MaxBatchCount": 10000,
+        "AuthenticationMode": "ConnectionString"
+    },
+    "DataSourceCredentialDomain": null,
+    "ScriptType": "Output"
+}

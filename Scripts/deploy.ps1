@@ -150,6 +150,19 @@ function New-Environment() {
     }
     #endregion
 
+    #region SQL server
+    Write-Host
+    Write-Host "Creating SQL server deployment"
+
+    $deployment_manifest = "$root_path/EdgeDeployments/sqlserver.manifest.json"
+    $priority = Get-date -Format 'yyMMddHHmm'
+    az iot edge deployment create --layered -d "sql-$priority" --pri $priority -n $iot_hub --tc "$target_condition" --content $deployment_manifest
+
+    # Write-Host
+    # Write-Host "SQL Server deployment complete. Press Enter to continue"
+    # Read-Host -Prompt ">"
+    #endregion
+
     # publish storage account name
     $storage_account = "$($resource_group)$($edge_asa_job)".Replace('-', '').Replace('_', '').ToLower()
     $storage_account = $storage_account.SubString(0, [System.Math]::Min($storage_account.Length, 20))
@@ -168,16 +181,24 @@ function New-Environment() {
     $parameters_file = "$root_path/StreamAnalytics/Deploy/StreamAnalytics.JobTemplate.parameters.json"
 
     $deployment_parameters = @{
-        "JobName" = @{ "value" = $edge_asa_job }
+        "StreamAnalyticsJobName" = @{ "value" = $edge_asa_job }
         "Query" = @{ "value" = ($query | Out-String) }
-        "Output_sqloutput_server" = @{ "value" = "sql2019vm.contoso.com" }
-        "Output_sqloutput_database" = @{ "value" = "iotsqlvmdb" }
-        "Output_sqloutput_table" = @{ "value" = "dbo.simtemp2" }
-        "Output_sqloutput_user" = @{ "value" = "dbadmin" }
-        "Output_sqloutput_password" = @{ "value" = "Passw0rdPassw0rd" }
-        "Output_sqloutput_maxWriterCount" = @{ "value" = $max_writer_count }
-        "Output_sqloutput_maxBatchCount" = @{ "value" = 10000 }
-        "Output_sqloutput_authenticationMode" = @{ "value" = "ConnectionString" }
+        "Output_rawtemperature_server" = @{ "value" = "tcp:sqlserver,1433" }
+        "Output_rawtemperature_database" = @{ "value" = "IoTEdgeDB" }
+        "Output_rawtemperature_table" = @{ "value" = "dbo.RawMachineTemperature" }
+        "Output_rawtemperature_user" = @{ "value" = "iotedgeaccount" }
+        "Output_rawtemperature_password" = @{ "value" = "Strong!Passw0rd" }
+        "Output_rawtemperature_maxWriterCount" = @{ "value" = $max_writer_count }
+        "Output_rawtemperature_maxBatchCount" = @{ "value" = 10000 }
+        "Output_rawtemperature_authenticationMode" = @{ "value" = "ConnectionString" }
+        "Output_aggregatedtemperature_server" = @{ "value" = "tcp:sqlserver,1433" }
+        "Output_aggregatedtemperature_database" = @{ "value" = "IoTEdgeDB" }
+        "Output_aggregatedtemperature_table" = @{ "value" = "dbo.AggregatedMachineTemperature" }
+        "Output_aggregatedtemperature_user" = @{ "value" = "iotedgeaccount" }
+        "Output_aggregatedtemperature_password" = @{ "value" = "Strong!Passw0rd" }
+        "Output_aggregatedtemperature_maxWriterCount" = @{ "value" = $max_writer_count }
+        "Output_aggregatedtemperature_maxBatchCount" = @{ "value" = 10000 }
+        "Output_aggregatedtemperature_authenticationMode" = @{ "value" = "ConnectionString" }
         "StorageAccountName" = @{ "value" = $storage_account }
     }
 
@@ -240,7 +261,7 @@ function New-Environment() {
 
     #endregion
 
-    #region iot edge deployment
+    #region stream analytics deployment
 
     # update IoT edge deployment with stream analytics job details
     $deployment_template = "$root_path/EdgeDeployments/streamanalytics.template.json"
@@ -255,7 +276,7 @@ function New-Environment() {
     } | Set-Content -Path $deployment_manifest
 
     Write-Host
-    Write-Host "Creating IoT edge deployment"
+    Write-Host "Creating stream analytics deployment"
 
     $priority = Get-date -Format 'yyMMddHHmm'
     az iot edge deployment create --layered -d "streamAnalytics-$priority" --pri $priority -n $iot_hub --tc "$target_condition" --content $deployment_manifest
