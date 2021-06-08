@@ -1,6 +1,6 @@
 {
-    "name": "EdgeProject",
-    "startFile": "EdgeProject.asaql",
+    "name": "StreamAnalytics",
+    "startFile": "StreamAnalytics.asaql",
     "configurations": [
         {
             "filePath": "JobConfig.json",
