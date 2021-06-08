@@ -1,0 +1,18 @@
+{
+    "content": {
+        "modulesContent": {
+            "$edgeAgent": {
+                "properties.desired.modules.sqlserver": {
+                    "settings": {
+                        "image": "microsoft/mssql-server-linux:2017-latest",
+                        "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Hostname\": \"sqlServer\", \"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1433\"}]}}}"
+                    },
+                    "type": "docker",
+                    "status": "running",
+                    "restartPolicy": "always",
+                    "version": "1.0"
+                }
+            }
+        }
+    }
+}
