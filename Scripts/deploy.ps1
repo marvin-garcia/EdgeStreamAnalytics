@@ -90,36 +90,6 @@ function New-Environment() {
     }
     #endregion
 
-    #region obtain ito hub name
-    $iot_hubs = az iot hub list | ConvertFrom-Json
-
-    Write-Host
-    Write-Host "Choose an IoT hub to use from this list (using its Index):"
-    for ($index = 0; $index -lt $iot_hubs.Count; $index++) {
-        Write-Host
-        Write-Host "$($index + 1): $($iot_hubs[$index].id)"
-    }
-    while ($true) {
-        $option = Read-Host -Prompt ">"
-        try {
-            if ([int]$option -ge 1 -and [int]$option -le $iot_hubs.Count) {
-                break
-            }
-        }
-        catch {
-            Write-Host "Invalid index '$($option)' provided."
-        }
-        Write-Host "Choose from the list using an index between 1 and $($iot_hubs.Count)."
-    }
-
-    $iot_hub = $iot_hubs[$option - 1].name
-
-    $twin_tag = "testStreamAnalytics=true"
-    $target_condition = "tags.$($twin_tag)"
-    Write-Host
-    Write-Host -Foreground Yellow "NOTE: You must update your IoT edge device(s) twin by adding the tag `"$twin_tag`""
-    #endregion
-
     #region obtain resource group name
     if (!$resource_group)
     {
@@ -148,6 +118,36 @@ function New-Environment() {
             Write-Host "Created new resource group $($resource_group) in $($resourceGroup.location)."
         }
     }
+    #endregion
+
+    #region obtain ito hub name
+    $iot_hubs = az iot hub list | ConvertFrom-Json | Sort-Object -Property id
+
+    Write-Host
+    Write-Host "Choose an IoT hub to use from this list (using its Index):"
+    for ($index = 0; $index -lt $iot_hubs.Count; $index++) {
+        Write-Host
+        Write-Host "$($index + 1): $($iot_hubs[$index].id)"
+    }
+    while ($true) {
+        $option = Read-Host -Prompt ">"
+        try {
+            if ([int]$option -ge 1 -and [int]$option -le $iot_hubs.Count) {
+                break
+            }
+        }
+        catch {
+            Write-Host "Invalid index '$($option)' provided."
+        }
+        Write-Host "Choose from the list using an index between 1 and $($iot_hubs.Count)."
+    }
+
+    $iot_hub = $iot_hubs[$option - 1].name
+
+    $twin_tag = "testStreamAnalytics=true"
+    $target_condition = "tags.$($twin_tag)"
+    Write-Host
+    Write-Host -Foreground Yellow "NOTE: You must update your IoT edge device(s) twin by adding the tag `"$twin_tag`""
     #endregion
 
     #region SQL server
