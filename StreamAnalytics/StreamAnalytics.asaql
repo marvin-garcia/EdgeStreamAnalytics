@@ -55,6 +55,8 @@ SELECT
     TopOne.avg,
     TopOne.min,
     TopOne.max,
+    TopOne.stdev,
+    TopOne.var,
     TopOne.lag,
     TopOne.last,
     TopOne.anomalyscore
