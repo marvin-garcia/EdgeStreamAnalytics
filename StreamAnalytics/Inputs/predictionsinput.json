@@ -1,5 +1,5 @@
 {
-    "Name": "sensorinput",
+    "Name": "predictionsinput",
     "Type": "Data Stream",
     "DataSourceType": "GatewayMessageBus",
     "Serialization": {

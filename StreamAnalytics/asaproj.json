@@ -7,10 +7,6 @@
             "subType": "JobConfig"
         },
         {
-            "filePath": "Inputs/sensorinput.json",
-            "subType": "Input"
-        },
-        {
             "filePath": "Outputs/telemetryoutput.json",
             "subType": "Output"
         },
@@ -19,8 +15,20 @@
             "subType": "Output"
         },
         {
-            "filePath": "Outputs/aggregatedtemperature.json",
+            "filePath": "Outputs/opcnodesdboutput.json",
             "subType": "Output"
+        },
+        {
+            "filePath": "Outputs/predictionsdboutput.json",
+            "subType": "Output"
+        },
+        {
+            "filePath": "Inputs/opcpublisherinput.json",
+            "subType": "Input"
+        },
+        {
+            "filePath": "Inputs/predictionsinput.json",
+            "subType": "Input"
         }
     ]
 }

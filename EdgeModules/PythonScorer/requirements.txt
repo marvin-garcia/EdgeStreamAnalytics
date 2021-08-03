@@ -1,0 +1,8 @@
+azure-iot-device~=2.7.0
+setuptools
+pyodbc
+pandas
+onnxmltools
+onnxruntime
+setuptools
+sqlalchemy

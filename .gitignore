@@ -1,3 +1,4 @@
 **/streamanalytics.manifest.json
 **/StreamAnalytics.JobTemplate.parameters.json
 workspace.code-workspace
+EdgeDeployments/python-scorer.manifest.json

@@ -1,0 +1,58 @@
+{
+    "content": {
+        "modulesContent": {
+            "$edgeAgent": {
+                "properties.desired.modules.pyScorer": {
+                    "settings": {
+                        "image": "__IMAGE__",
+                        "createOptions": "{}"
+                    },
+                    "env": {
+                        "SQL_SERVER": {
+                            "value": "mssql"
+                        },
+                        "SQL_DATABASE": {
+                            "value": "IoTEdgeDB"
+                        },
+                        "SQL_USERNAME": {
+                            "value": "iotuser"
+                        },
+                        "SQL_PASSWORD": {
+                            "value": "Strong!Passw0rd"
+                        },
+                        "SQL_MODELS_TABLE": {
+                            "value": "Models"
+                        },
+                        "SQL_FEATURES_TABLE": {
+                            "value": "OpcNodes"
+                        },
+                        "SQL_MODELS_ID_COLUMN_NAME": {
+                            "value": "applicationUri"
+                        },
+                        "PREDICT_TRIGGER_PROPERTY_NAME": {
+                            "value": "ApplicationUri"
+                        },
+                        "PREDICT_TRIGGER_PROPERTY_VALUE": {
+                            "value": "RandomSignedInt32"
+                        },
+                        "TIMER_SECONDS": {
+                            "value": "30"
+                        },
+                        "LOG_LEVEL": {
+                            "value": "20"
+                        }
+                    },
+                    "type": "docker",
+                    "status": "running",
+                    "restartPolicy": "always",
+                    "version": "1.0"
+                }
+            },
+            "$edgeHub": {
+                "properties.desired.routes.streamAnalyticsToScorer": "FROM /messages/modules/streamAnalytics/outputs/telemetryoutput INTO BrokeredEndpoint(\"modules/pyScorer/inputs/input1\")",
+                "properties.desired.routes.predictionsToStreamAnalytics": "FROM /messages/modules/pyScorer/outputs/predictionoutput INTO BrokeredEndpoint(\"modules/streamAnalytics/inputs/predictionsinput\")"
+
+            }
+        }
+    }
+}

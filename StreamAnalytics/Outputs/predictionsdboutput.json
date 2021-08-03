@@ -1,12 +1,12 @@
 {
-    "Name": "rawtemperature",
+    "Name": "predictionsdboutput",
     "DataSourceType": "SQL Database",
     "SQLDatabaseProperties": {
         "Database": "IoTEdgeDB",
-        "Server": "sqlserver",
+        "Server": "mssql",
         "User": "SA",
         "Password": "Strong!Passw0rd",
-        "Table": "RawMachineTemperature",
+        "Table": "Predictions",
         "MaxWriterCount": 1,
         "MaxBatchCount": 10000,
         "AuthenticationMode": "ConnectionString"

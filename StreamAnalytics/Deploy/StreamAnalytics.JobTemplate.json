@@ -83,57 +83,57 @@
     "Query": {
       "type": "string"
     },
-    "Output_rawtemperature_server": {
+    "Output_opcnodesdboutput_server": {
       "type": "string"
     },
-    "Output_rawtemperature_database": {
+    "Output_opcnodesdboutput_database": {
       "type": "string"
     },
-    "Output_rawtemperature_user": {
+    "Output_opcnodesdboutput_user": {
       "type": "string"
     },
-    "Output_rawtemperature_table": {
+    "Output_opcnodesdboutput_table": {
       "type": "string"
     },
-    "Output_rawtemperature_password": {
+    "Output_opcnodesdboutput_password": {
       "type": "string"
     },
-    "Output_rawtemperature_maxWriterCount": {
+    "Output_opcnodesdboutput_maxWriterCount": {
       "type": "int",
       "defaultValue": 0
     },
-    "Output_rawtemperature_maxBatchCount": {
+    "Output_opcnodesdboutput_maxBatchCount": {
       "type": "int",
       "defaultValue": 10000
     },
-    "Output_rawtemperature_authenticationMode": {
+    "Output_opcnodesdboutput_authenticationMode": {
       "type": "string",
       "defaultValue": "ConnectionString"
     },
-    "Output_aggregatedtemperature_server": {
+    "Output_predictionsdboutput_server": {
       "type": "string"
     },
-    "Output_aggregatedtemperature_database": {
+    "Output_predictionsdboutput_database": {
       "type": "string"
     },
-    "Output_aggregatedtemperature_user": {
+    "Output_predictionsdboutput_user": {
       "type": "string"
     },
-    "Output_aggregatedtemperature_table": {
+    "Output_predictionsdboutput_table": {
       "type": "string"
     },
-    "Output_aggregatedtemperature_password": {
+    "Output_predictionsdboutput_password": {
       "type": "string"
     },
-    "Output_aggregatedtemperature_maxWriterCount": {
+    "Output_predictionsdboutput_maxWriterCount": {
       "type": "int",
       "defaultValue": 0
     },
-    "Output_aggregatedtemperature_maxBatchCount": {
+    "Output_predictionsdboutput_maxBatchCount": {
       "type": "int",
       "defaultValue": 10000
     },
-    "Output_aggregatedtemperature_authenticationMode": {
+    "Output_predictionsdboutput_authenticationMode": {
       "type": "string",
       "defaultValue": "ConnectionString"
     },
@@ -210,7 +210,26 @@
         },
         "inputs": [
           {
-            "name": "sensorinput",
+            "name": "opcpublisherinput",
+            "properties": {
+              "type": "Stream",
+              "datasource": {
+                "type": "GatewayMessageBus",
+                "properties": {}
+              },
+              "compression": {
+                "type": "None"
+              },
+              "serialization": {
+                "type": "Json",
+                "properties": {
+                  "encoding": "UTF8"
+                }
+              }
+            }
+          },
+          {
+            "name": "predictionsinput",
             "properties": {
               "type": "Stream",
               "datasource": {
@@ -247,37 +266,37 @@
             }
           },
           {
-            "name": "rawtemperature",
+            "name": "opcnodesdboutput",
             "properties": {
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[parameters('Output_rawtemperature_server')]",
-                  "database": "[parameters('Output_rawtemperature_database')]",
-                  "user": "[parameters('Output_rawtemperature_user')]",
-                  "table": "[parameters('Output_rawtemperature_table')]",
-                  "password": "[parameters('Output_rawtemperature_password')]",
-                  "maxWriterCount": "[parameters('Output_rawtemperature_maxWriterCount')]",
-                  "maxBatchCount": "[parameters('Output_rawtemperature_maxBatchCount')]",
-                  "authenticationMode": "[parameters('Output_rawtemperature_authenticationMode')]"
+                  "server": "[parameters('Output_opcnodesdboutput_server')]",
+                  "database": "[parameters('Output_opcnodesdboutput_database')]",
+                  "user": "[parameters('Output_opcnodesdboutput_user')]",
+                  "table": "[parameters('Output_opcnodesdboutput_table')]",
+                  "password": "[parameters('Output_opcnodesdboutput_password')]",
+                  "maxWriterCount": "[parameters('Output_opcnodesdboutput_maxWriterCount')]",
+                  "maxBatchCount": "[parameters('Output_opcnodesdboutput_maxBatchCount')]",
+                  "authenticationMode": "[parameters('Output_opcnodesdboutput_authenticationMode')]"
                 }
               }
             }
           },
           {
-            "name": "aggregatedtemperature",
+            "name": "predictionsdboutput",
             "properties": {
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[parameters('Output_aggregatedtemperature_server')]",
-                  "database": "[parameters('Output_aggregatedtemperature_database')]",
-                  "user": "[parameters('Output_aggregatedtemperature_user')]",
-                  "table": "[parameters('Output_aggregatedtemperature_table')]",
-                  "password": "[parameters('Output_aggregatedtemperature_password')]",
-                  "maxWriterCount": "[parameters('Output_aggregatedtemperature_maxWriterCount')]",
-                  "maxBatchCount": "[parameters('Output_aggregatedtemperature_maxBatchCount')]",
-                  "authenticationMode": "[parameters('Output_aggregatedtemperature_authenticationMode')]"
+                  "server": "[parameters('Output_predictionsdboutput_server')]",
+                  "database": "[parameters('Output_predictionsdboutput_database')]",
+                  "user": "[parameters('Output_predictionsdboutput_user')]",
+                  "table": "[parameters('Output_predictionsdboutput_table')]",
+                  "password": "[parameters('Output_predictionsdboutput_password')]",
+                  "maxWriterCount": "[parameters('Output_predictionsdboutput_maxWriterCount')]",
+                  "maxBatchCount": "[parameters('Output_predictionsdboutput_maxBatchCount')]",
+                  "authenticationMode": "[parameters('Output_predictionsdboutput_authenticationMode')]"
                 }
               }
             }

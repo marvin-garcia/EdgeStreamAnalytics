@@ -1,88 +1,25 @@
-WITH
-Aggregate AS
-(
-    SELECT
-        COUNT(*),
-        AVG(machine.temperature),
-        MAX(machine.temperature),
-        MIN(machine.temperature),
-        STDEV(machine.temperature),
-        VAR(machine.temperature)
-    FROM
-        sensorinput TIMESTAMP BY timeCreated
-    GROUP BY TumblingWindow(minute, 3)
-),
-Analytics AS
-(
-    SELECT
-        LAG(machine.temperature) OVER (LIMIT DURATION(minute, 3)),
-        LAST(machine.temperature) OVER (LIMIT DURATION(minute, 3)),
-        AnomalyDetection_SpikeAndDip(machine.temperature, 80, 120, 'spikesanddips') OVER(LIMIT DURATION(minute, 3))
-    FROM sensorinput TIMESTAMP BY timeCreated
-),
-JoinedAggregate AS
-(
-    SELECT
-        aggregate___timestamp as timestamp,
-        aggregate.COUNT as count,
-        aggregate.AVG as avg,
-        aggregate.MIN as min,
-        aggregate.MAX as max,
-        aggregate.STDEV as stdev,
-        aggregate.VAR as var,
-        analytics.LAG as lag,
-        analytics.LAST as last,
-        analytics.AnomalyDetection_SpikeAndDip.Score as anomalyscore
-    FROM
-        Aggregate
-    JOIN
-        Analytics
-    ON
-        DATEDIFF(second, Aggregate, Analytics) BETWEEN 0 AND 10
-),
-TopAggregate AS
-(
-    SELECT
-        TopOne() OVER (ORDER BY timestamp DESC)
-    FROM
-        JoinedAggregate
-    GROUP BY TumblingWindow(minute, 3)
-)
-
-SELECT
-    TopOne.timestamp,
-    TopOne.count,
-    TopOne.avg,
-    TopOne.min,
-    TopOne.max,
-    TopOne.stdev,
-    TopOne.var,
-    TopOne.lag,
-    TopOne.last,
-    TopOne.anomalyscore
-INTO
-    aggregatedtemperature
-FROM
-    TopAggregate
-
-SELECT
-    timeCreated as timestamp,
-    machine.temperature as temperature
-INTO
-	rawtemperature
-FROM
-	sensorinput TIMESTAMP BY timeCreated
-
-SELECT
-    TopOne.timestamp,
-    TopOne.count,
-    TopOne.avg,
-    TopOne.min,
-    TopOne.max,
-    TopOne.lag,
-    TopOne.last,
-    TopOne.anomalyscore
+Select
+    *
 INTO
     telemetryoutput
 FROM
-    TopAggregate
+    opcpublisherinput
+
+SELECT
+    Value.SourceTimestamp,
+    NodeId,
+    ApplicationUri,
+    (LAG(Value) OVER (PARTITION BY ApplicationUri LIMIT DURATION(minute, 3)  WHEN DisplayName = 'DipData')).Value As DipData,
+    (LAG(Value) OVER (PARTITION BY ApplicationUri LIMIT DURATION(minute, 3)  WHEN DisplayName = 'SpikeData')).Value As SpikeData,
+    (LAG(Value) OVER (PARTITION BY ApplicationUri LIMIT DURATION(minute, 3)  WHEN DisplayName = 'RandomSignedInt32')).Value As RandomSignedInt32
+INTO
+    opcnodesdboutput
+FROM
+    opcpublisherinput
+
+SELECT
+    *
+INTO
+    predictionsdboutput
+FROM
+    predictionsinput
