@@ -2,6 +2,9 @@
 # Licensed under the MIT license. See LICENSE file in the project root for
 # full license information.
 
+# Useful links:
+# https://www.onnxruntime.ai/python/auto_examples/plot_convert_pipeline_vectorizer.html#sphx-glr-auto-examples-plot-convert-pipeline-vectorizer-py
+
 import os
 import sys
 import json

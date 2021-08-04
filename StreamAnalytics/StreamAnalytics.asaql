@@ -1,3 +1,4 @@
+-- Forward telemetry input as-is
 Select
     *
 INTO
@@ -5,6 +6,7 @@ INTO
 FROM
     opcpublisherinput
 
+-- Store lastest value for each OPC tag in OPC Data table
 SELECT
     Value.SourceTimestamp,
     NodeId,
@@ -17,6 +19,7 @@ INTO
 FROM
     opcpublisherinput
 
+-- Store prediction values in Predictions table
 SELECT
     *
 INTO
